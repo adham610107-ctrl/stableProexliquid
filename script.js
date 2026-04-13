@@ -356,23 +356,27 @@ function applyIOSNotchFix() {
 // ===== INIT =====
 window.onload = async () => {
     await loadData();
-    const isAuth=localStorage.getItem('pro_exam_auth');
-    if (isAuth==='true') {
-        const name=localStorage.getItem('pro_exam_name')||'Talaba';
-        const snEl=document.getElementById('student-name'); if(snEl)snEl.value=name;
-        const dnEl=document.getElementById('display-name'); if(dnEl)dnEl.innerText=name;
-        currentUser=name;
-        document.getElementById('global-nav').classList.remove('hidden');
-        const authScreen=document.getElementById('auth-screen');
-        if (authScreen&&!authScreen.classList.contains('hidden')) switchScreen('auth-screen','welcome-screen');
-        // Load stats from Google Sheets on startup
-        await loadUserStats(name);
-        checkAdminBlock(); startBlockCheck(); startHeartbeat();
-    }
+    
+    // UI/UX dizaynini qulaylashtirish uchun login va Google Sheets xavfsizligi olib tashlandi
+    currentUser = 'Adhamjon'; 
+    const snEl = document.getElementById('student-name'); if(snEl) snEl.value = currentUser;
+    const dnEl = document.getElementById('display-name'); if(dnEl) dnEl.innerText = currentUser;
+    
+    document.getElementById('global-nav').classList.remove('hidden');
+    
+    // Auth ekranini to'liq chetlab o'tib, birdan dashboard'ga o'tish
+    switchScreen('auth-screen', 'dashboard-screen');
+    
     if (localStorage.getItem('theme')==='dark') { document.body.classList.replace('light-mode','dark-mode'); const s=document.getElementById('theme-slider'); if(s)s.checked=true; }
     if (localStorage.getItem('comfort_eye')==='on') applyComfortEye(true);
     applyIOSNotchFix();
-    updateDashboardStats(); updateDailyStreak(); updateGreeting(); updateProgressChart(currentChartPeriod); updateCategoryProgress();
+    
+    updateDashboardStats(); 
+    updateDailyStreak(); 
+    updateGreeting(); 
+    updateProgressChart(currentChartPeriod); 
+    updateCategoryProgress(); 
+    showRentgenOnDashboard();
 };
 
 // ===== THEME & COMFORT EYE — v13 =====
