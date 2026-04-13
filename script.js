@@ -212,6 +212,7 @@ async function authenticateUser() {
         errorEl.classList.remove('hidden'); 
         return;
     }
+
     btn.innerText = "Tizimga kirilmoqda..."; 
     btn.disabled = true;
     errorEl.classList.add('hidden');
