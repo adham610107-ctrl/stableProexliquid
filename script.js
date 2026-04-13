@@ -199,47 +199,36 @@ function startHeartbeat() {
     if (heartbeatInterval) clearInterval(heartbeatInterval);
     heartbeatInterval = setInterval(() => { const a=localStorage.getItem('pro_exam_auth'); if(a==='true'&&!document.hidden) checkAdminBlock(); }, 45000);
 }
-// ===== AUTH =====
+// ===== AUTH (To'g'ridan-to'g'ri o'tish) =====
 async function authenticateUser() {
     const loginVal  = document.getElementById('auth-login').value.trim();
     const passVal   = document.getElementById('auth-password').value.trim();
-    const keygenVal = document.getElementById('auth-keygen').value.trim();
     const errorEl   = document.getElementById('auth-error');
     const btn       = document.getElementById('btn-auth');
+
     if (!loginVal || !passVal) {
         errorEl.innerText = "Login va Parol majburiy!";
-        errorEl.classList.remove('hidden'); return;
+        errorEl.classList.remove('hidden'); 
+        return;
     }
-   btn.innerText = "Tekshirilmoqda..."; btn.disabled = true;
+
+    btn.innerText = "Tizimga kirilmoqda..."; 
+    btn.disabled = true;
     errorEl.classList.add('hidden');
-    try {
-        const deviceId = await getOrCreateDeviceId();
-        // Google Apps Script: Content-Type header qo'shilmaydi (CORS muammo bo'ladi)
-        const r = await fetch(GOOGLE_SCRIPT_URL, {
-            method: 'POST',
-            body: JSON.stringify({ login: loginVal, password: passVal, keygen: keygenVal, deviceId })
-        });
-        const result = await r.json();
-        if (result.success) {
-            localStorage.setItem('pro_exam_auth', 'true');
-            localStorage.setItem('pro_exam_name', result.name || loginVal);
-            const snEl = document.getElementById('student-name');
-            if (snEl) snEl.value = result.name || loginVal;
-            try { sendLog('login', { login: loginVal, deviceId }); } catch(e) {}
-            switchScreen('auth-screen', 'welcome-screen');
-            startBlockCheck();
-            startHeartbeat();
-        } else {
-            errorEl.innerText = result.message || "Xato login yoki parol!";
-            errorEl.classList.remove('hidden');
-        }
-    } catch(e) {
-        errorEl.innerText = "Tarmoqda xatolik. Internetni tekshiring.";
-        errorEl.classList.remove('hidden');
-        console.error('Auth error:', e);
-    } finally {
-        btn.innerText = "Kirish · Tasdiqlash"; btn.disabled = false;
-    }
+
+    // Google Sheets o'rniga vizual effekt uchun qisqa pauza va to'g'ridan-to'g'ri kirish
+    setTimeout(() => {
+        localStorage.setItem('pro_exam_auth', 'true');
+        localStorage.setItem('pro_exam_name', loginVal);
+        
+        const snEl = document.getElementById('student-name');
+        if (snEl) snEl.value = loginVal;
+        
+        switchScreen('auth-screen', 'welcome-screen');
+        
+        btn.innerText = "Kirish · Tasdiqlash"; 
+        btn.disabled = false;
+    }, 600);
 }
 
 // ===== AUDIO & PARTICLES =====
