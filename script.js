@@ -352,25 +352,25 @@ function applyIOSNotchFix() {
         document.head.appendChild(s);
     }
 }
-
-// ===== INIT =====
+// ===== INIT (To'g'ridan-to'g'ri Dashboard'dan boshlash) =====
 window.onload = async () => {
     await loadData();
     
-    // UI/UX dizaynini qulaylashtirish uchun login va Google Sheets xavfsizligi olib tashlandi
-    currentUser = 'Adhamjon'; 
+    // Default foydalanuvchi nomini o'rnatamiz, shunda kod xato bermaydi
+    currentUser = "Adhamjon"; 
     const snEl = document.getElementById('student-name'); if(snEl) snEl.value = currentUser;
     const dnEl = document.getElementById('display-name'); if(dnEl) dnEl.innerText = currentUser;
-    
-    document.getElementById('global-nav').classList.remove('hidden');
-    
-    // Auth ekranini to'liq chetlab o'tib, birdan dashboard'ga o'tish
-    switchScreen('auth-screen', 'dashboard-screen');
-    
-    if (localStorage.getItem('theme')==='dark') { document.body.classList.replace('light-mode','dark-mode'); const s=document.getElementById('theme-slider'); if(s)s.checked=true; }
-    if (localStorage.getItem('comfort_eye')==='on') applyComfortEye(true);
+
+    // Mavzuni sozlash
+    if (localStorage.getItem('theme') === 'dark') { 
+        document.body.classList.replace('light-mode', 'dark-mode'); 
+        const s = document.getElementById('theme-slider'); 
+        if(s) s.checked = true; 
+    }
+    if (localStorage.getItem('comfort_eye') === 'on') applyComfortEye(true);
     applyIOSNotchFix();
-    
+
+    // Dastlabki ma'lumotlarni yuklash va interfeysni yangilash
     updateDashboardStats(); 
     updateDailyStreak(); 
     updateGreeting(); 
