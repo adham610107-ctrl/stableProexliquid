@@ -118,11 +118,10 @@ body.comfort-eye #comfort-eye-toast {
 /* Auth va welcome screen tugmalari — filter context dan chiqarish */
 body.comfort-eye .hero-overlay,
 body.comfort-eye .hero-card,
-body.comfort-eye .btn-primary,
-body.comfort-eye .login-form {
-    /* transform: translateZ(0) — yangi stacking context yaratib filter ta'sirini kamaytiradi */
-    transform: translateZ(0);
-    will-change: transform;
+body.comfort-eye .btn-primary {
+    position: relative;
+    z-index: 99999 !important; /* Qatlamlar muammosini hal qilib, tugmani eng ustga olib chiqish */
+    pointer-events: auto !important;
 }
 body.comfort-eye .btn-primary {
     position: relative;
